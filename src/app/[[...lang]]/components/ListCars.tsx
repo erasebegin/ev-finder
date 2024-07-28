@@ -6,7 +6,9 @@ export default function ListCars() {
   console.log({ data, error });
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      CARS
+      {data.cars.map((car) => (
+        <CarCard />
+      ))}
     </div>
   );
 }

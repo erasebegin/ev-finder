@@ -3,13 +3,19 @@ import Negotiator from "negotiator";
 import { NextRequest, NextResponse } from "next/server";
 
 // Define the available locales and the default locale
-const locales = ["en", "de"];
-const defaultLocale = "en";
+const locales = ["en-XX", "de-XX"];
+const defaultLocale = "en-GB";
 
 // Get the preferred locale from the request headers
 function getLocale(request) {
   const negotiator = new Negotiator(request);
   const languages = negotiator.languages();
+
+  // If no specific language is provided, use the defaultLocale
+  if (languages.includes("*") || languages.length === 0) {
+    return defaultLocale;
+  }
+
   return match(languages, locales, defaultLocale);
 }
 
@@ -26,6 +32,11 @@ export function middleware(request: NextRequest) {
     return;
   }
 
+  // Only perform the locale redirect for the root path
+  if (pathname !== "/") {
+    return;
+  }
+
   // Check if the pathname already includes a supported locale
   const pathnameHasLocale = locales.some(
     (locale) =>
@@ -38,7 +49,7 @@ export function middleware(request: NextRequest) {
 
   // Otherwise, get the preferred locale and redirect to the URL with the locale
   const locale = getLocale(request);
-  request.nextUrl.pathname = `/${locale.split("-")[0]}${pathname}`;
+  request.nextUrl.pathname = `/${locale?.split("-")[0]}${pathname}`;
   return NextResponse.redirect(request.nextUrl);
 }
 

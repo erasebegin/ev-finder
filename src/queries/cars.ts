@@ -4,9 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 
 const carKeys = queryKeyFactory("car");
 
-export const useCars = () => {
+export const useCars = (searchTerm?: string) => {
   return useQuery({
-    queryKey: carKeys.all,
-    queryFn: () => fetchCars(),
+    queryKey: carKeys.list({ searchTerm }),
+    queryFn: () => fetchCars(searchTerm),
   });
 };

@@ -1,21 +1,23 @@
 import axios from "axios";
 
-export const fetchCars = async () => {
+export const fetchCars = async (searchTerm?: string) => {
   try {
     const response = await axios.post(
       "https://eu-central-1-shared-euc1-02.cdn.hygraph.com/content/clyfqn5f0007q07ult8ka7bcz/master",
       {
         query: `
-        {
-          cars {
-            id
-            make
-            model
-          }
-        }
+            {
+              cars(where: {_search: ${searchTerm || ""}}) {
+                id
+                make
+                model
+            }
+}
         `,
       },
     );
+
+    console.log({ response });
 
     const { data } = response;
     if (data.errors) {
