@@ -1,6 +1,7 @@
 export type CarDetails = {
   id: string;
   u_r_l: string;
+  Title: string;
   make: string;
   model: string;
   card_basic_details: {

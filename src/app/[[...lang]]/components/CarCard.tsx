@@ -5,12 +5,11 @@ type Props = {
 };
 
 const CarCard: React.FC<Props> = ({ carData }) => {
-  const { make, model } = carData;
-
+  const { Title } = carData ?? {};
+  console.log({ carData });
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h3>{make}</h3>
-      <h3>{model}</h3>
+    <div className="flex flex-col items-center">
+      <h3>{Title}</h3>
     </div>
   );
 };
