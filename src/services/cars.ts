@@ -35,21 +35,26 @@ import data from "../transformed_ev_data.json";
 export const fetchCars = async (
   itemsPerPage: number = 10,
   currentPage: number = 0,
-  searchTerm: string,
+  searchTerm?: string,
 ) => {
-  const start = currentPage * itemsPerPage;
-  const end = currentPage * itemsPerPage + itemsPerPage;
+  try {
+    const start = currentPage * itemsPerPage;
+    const end = (currentPage + 1) * itemsPerPage;
 
-  if (!searchTerm) return data.slice(start, end);
+    if (!searchTerm) return data.slice(start, end);
 
-  const carData = data.filter(
-    (car) =>
-      car.make.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-      car.model.toLowerCase().includes(searchTerm?.toLowerCase()),
-  );
+    const carData = data.filter(
+      (car) =>
+        car.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        car.model.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
 
-  const totalPages = Math.ceil(carData.length / itemsPerPage);
+    const totalPages = Math.ceil(carData.length / itemsPerPage);
 
-  console.log({ start, end, searchTerm });
-  return carData.slice(start, end);
+    console.log({ totalPages });
+    return carData.slice(start, end);
+  } catch (error) {
+    console.error("Error fetching cars:", error);
+    throw error;
+  }
 };
