@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import { SupportedLocale } from "@/types/lang";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,15 +13,20 @@ export const metadata: Metadata = {
   description: "A comprehensive electric vehicle database and research tool",
 };
 
+type LayoutProps = {
+  children: React.ReactNode;
+  params: { lang: SupportedLocale };
+};
+
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  params: { lang },
+}: LayoutProps) {
   return (
     <html lang="en">
-      <Providers>
-        <body className={inter.className}>
+      <Providers locale={lang}>
+        <body className={`${inter.className} flex`}>
+          <Sidebar />
           <Header />
           {children}
         </body>
